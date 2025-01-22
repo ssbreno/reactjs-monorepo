@@ -1,0 +1,8 @@
+{
+  "name": "reactjs-monorepo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/ssbreno/reactjs-monorepo.git",
+  "author": "Breno Sobral <ssobralbreno@gmail.com>",
+  "license": "MIT"
+}
