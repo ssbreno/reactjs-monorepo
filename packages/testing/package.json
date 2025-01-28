@@ -1,0 +1,28 @@
+{
+  "name": "@monorepo/testing",
+  "version": "1.0.0",
+  "main": "eslintrc.js",
+  "author": "Breno Sobral",
+  "license": "MIT",
+  "scripts": {
+    "start": " echo 'No start script defined'",
+    "start:dev": "echo 'No start:dev script defined'",
+    "build": "echo 'No build script defined'",
+    "lint": "echo 'No lint script defined'",
+    "lint:fix": "echo 'No lint:fix script defined'",
+    "reset": "echo 'No reset script defined'",
+    "clean": "echo 'No clean script defined'",
+    "coverage": "echo 'No build script found'"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "@testing-library/user-event": "^14.6.1",
+    "jsdom": "^26.0.0",
+    "vitest": "^3.0.4"
+  },
+  "peerDependencies": {},
+  "publishConfig": {
+    "access": "public"
+  }
+}
