@@ -3,14 +3,14 @@ import React from 'react';
 export interface ButtonProps {
   variant?: 'primary' | 'secondary';
   size?: 'small' | 'medium' | 'large';
-  children: React.ReactNode;
+  children?: React.ReactNode;
   onClick?: () => void;
 }
 
 export const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
   size = 'medium',
-  children,
+  children = 'Button',
   onClick,
 }) => {
   const baseStyles = 'rounded font-semibold transition-colors';

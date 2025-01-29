@@ -1,33 +1,39 @@
-import { defineConfig, mergeConfig, ViteUserConfig } from 'vitest/config';
+import { defineConfig, mergeConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
-import { resolve } from 'path';
+import tsconfigPaths from 'vite-tsconfig-paths';
+import type { UserConfig } from 'vite';
 
 const baseConfig = defineConfig({
-  plugins: [react()],
+  plugins: [react(), tsconfigPaths()],
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: resolve(__dirname, './setup.ts'),
+    setupFiles: ['@monorepo/testing/setup'],
     coverage: {
+      provider: 'v8',
       reporter: ['text', 'json', 'html'],
       exclude: [
         'node_modules/',
         'src/test/',
         '**/*.d.ts',
+        '**/*.test.{ts,tsx}',
+        '**/*.spec.{ts,tsx}',
+        '**/types/**',
       ],
     },
-    include: ['src/**/*.{test,spec}.{js,jsx,ts,tsx}'],
-    watch: false,
+    include: ['src/**/*.{test,spec}.{ts,tsx}'],
+    exclude: ['node_modules', 'dist'],
+    mockReset: true,
   },
 });
 
-export function createVitestConfig(config: ViteUserConfig = {}) {
+export function createVitestConfig(config: UserConfig = {}) {
   return mergeConfig(baseConfig, {
     ...config,
     test: {
       ...config.test,
       setupFiles: [
-        resolve(__dirname, './setup.ts'),
+        ...(baseConfig.test?.setupFiles || []),
         ...(config.test?.setupFiles || []),
       ],
     },

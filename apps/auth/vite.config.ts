@@ -1,19 +1,36 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { resolve } from 'path';
+import tsconfigPaths from 'vite-tsconfig-paths';
+import type { PluginOption } from 'vite';
 
 export default defineConfig({
-  plugins: [react()],
-  define: {
-    'import.meta.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL),
-    'import.meta.env.VITE_S3_ENDPOINT': JSON.stringify(process.env.VITE_S3_ENDPOINT),
+  plugins: [
+    react(),
+    tsconfigPaths()
+  ] as PluginOption[],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src')
+    }
+  },
+  build: {
+    sourcemap: true,
+    rollupOptions: {
+      external: [],
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          ui: ['@monorepo/ui']
+        },
+      },
+    },
   },
   server: {
     host: true,
-    strictPort: true,
-    port: 5173,
+    port: 5174,
     watch: {
       usePolling: true,
-      interval: 1000
     }
-  }
-})
+  },
+});

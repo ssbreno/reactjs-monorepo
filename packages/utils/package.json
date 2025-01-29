@@ -7,7 +7,14 @@
   "scripts": {
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "start": " echo 'No start script defined'",
+    "start:dev": "echo 'No start:dev script defined'",
+    "build": "echo 'No build script defined'",
+    "lint": "echo 'No lint script defined'",
+    "lint:fix": "echo 'No lint:fix script defined'",
+    "reset": "echo 'No reset script defined'",
+    "clean": "echo 'No clean script defined'"
   },
   "devDependencies": {},
   "peerDependencies": {},

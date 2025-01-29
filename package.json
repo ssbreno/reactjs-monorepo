@@ -6,18 +6,30 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "lint:fix": "yarn workspaces run lint:fix",
-    "lint": "yarn workspaces run lint",
-    "reset": "yarn workspaces run reset && rm -rf node_modules && rm -rf yarn.lock",
+    "build:ui": "cd packages/ui && yarn build",
+    "build:testing": "cd packages/testing && yarn build",
+    "build:config": "cd packages/config && yarn build",
     "build": "yarn workspaces run build",
-    "build:ui": "yarn workspace common-ui build",
-    "test": "yarn workspaces run test",
-    "test:coverage": "yarn workspaces run test:coverage",
-    "dev": "yarn workspaces run dev",
+
+    "dev": "concurrently -n \"auth,talent\" -c \"green,blue\" \"yarn dev:auth\" \"yarn dev:talent\"",
+    "dev:auth": "yarn workspace @monorepo/auth dev",
+    "dev:talent": "yarn workspace @monorepo/talent dev",
+
+    "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" --ignore-path .eslintignore",
+    "lint:fix": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix --ignore-path .eslintignore",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md}\"",
+
     "clean": "yarn workspaces run clean",
-    "talent:dev": "cd apps/talent && yarn dev",
-    "auth:dev": "cd apps/auth && yarn dev",
-    "main:dev": "cd apps/main && yarn dev",
+    "clean:all": "rimraf node_modules packages/*/node_modules apps/*/node_modules",
+
+    "analyze": "yarn workspaces run analyze",
+
+    "test:ui": "yarn workspace @monorepo/ui test",
+    "test:ui:watch": "yarn workspace @monorepo/ui test:watch",
+    "test:ui:coverage": "yarn workspace @monorepo/ui test:coverage",
+
+    "postinstall": "yarn build:ui && yarn build:testing && yarn build:config",
     "prepare": "husky install",
     "commit": "git-cz"
   },
@@ -26,27 +38,41 @@
   },
   "dependencies": {
     "@paralleldrive/cuid2": "^2.2.2",
+    "git-cz": "^4.9.0",
     "reflect-metadata": "^0.2.1",
-    "zod": "^3.22.4",
-    "git-cz": "^4.9.0"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@commitlint/cli": "^18.6.1",
     "@commitlint/config-conventional": "^18.6.3",
     "@faker-js/faker": "^8.4.1",
-    "@monorepo/eslint": "1.0.0",
-    "@monorepo/testing": "1.0.0",
+    "@monorepo/eslint": "*",
+    "@monorepo/testing": "*",
+    "@monorepo/ui": "*",
+    "@monorepo/config": "*",
     "@types/node": "^20.11.16",
+    "@typescript-eslint/eslint-plugin": "^8.22.0",
+    "@typescript-eslint/parser": "^8.22.0",
+    "@vitest/coverage-c8": "^0.33.0",
+    "@vitest/ui": "^3.0.4",
+    "autoprefixer": "^10.4.20",
     "chalk": "^5.3.0",
-    "eslint": "^8.56.0",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^3.2.5",
-    "tsc-alias": "^1.8.8",
-    "tsx": "^4.7.1",
-    "typescript": "^5.3.3",
+    "concurrently": "^8.2.2",
     "husky": "^8.0.3",
     "is-ci": "^3.0.1",
-    "lint-staged": "^15.3.0"
+    "lint-staged": "^15.3.0",
+    "postcss": "^8.5.1",
+    "prettier": "^3.4.2",
+    "rimraf": "3.0.2",
+    "rollup-plugin-visualizer": "^5.14.0",
+    "tailwindcss": "^4.0.0",
+    "terser": "^5.37.0",
+    "tsc-alias": "^1.8.8",
+    "tsup": "6.7.0",
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3",
+    "vite-plugin-pwa": "^0.21.1",
+    "vite-tsconfig-paths": "4.2.0"
   },
   "workspaces": {
     "packages": [

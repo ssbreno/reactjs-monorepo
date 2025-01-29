@@ -1,38 +1,51 @@
-import react from "@vitejs/plugin-react";
-import { resolve } from "path";
-import { defineConfig } from "vite";
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 import dts from 'vite-plugin-dts';
+import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [
     react(),
     dts({
-      insertTypesEntry: true,
+      include: ['src'],
+      exclude: ['**/*.test.tsx', '**/*.stories.tsx'],
     }),
   ],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src')
+    }
+  },
   build: {
     lib: {
-      entry: resolve(__dirname, "src/index.ts"),
-      name: "common-ui",
-      fileName: (format) => `common-ui.${format}.js`,
-      formats: ['es', 'umd'],
+      entry: resolve(__dirname, 'src/index.ts'),
+      formats: ['es', 'cjs'],
+      fileName: (format) => `index.${format === 'es' ? 'mjs' : 'js'}`,
     },
     rollupOptions: {
-      external: ["react", "react-dom"],
+      external: ['react', 'react-dom', 'react/jsx-runtime'],
       output: {
         globals: {
-          react: "React",
-          "react-dom": "ReactDOM",
-        },
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name === 'style.css') return 'common-ui.css';
-          return assetInfo.name;
+          react: 'React',
+          'react-dom': 'ReactDOM',
         },
       },
     },
-    // Generate sourcemaps
-    sourcemap: true,
-    // Minify output
-    minify: 'esbuild',
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: [resolve(__dirname, '../../packages/testing/src/setup.ts')],
+    include: ['src/**/*.{test,spec}.{ts,tsx}'],
+    coverage: {
+      provider: 'c8',
+      reporter: ['text', 'json', 'html'],
+      exclude: [
+        'node_modules/',
+        'src/**/*.test.{ts,tsx}',
+        'src/**/*.spec.{ts,tsx}',
+        'src/**/*.d.ts',
+      ],
+    },
   },
 });

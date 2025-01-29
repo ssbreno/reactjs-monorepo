@@ -1,28 +1,38 @@
 {
   "name": "@monorepo/testing",
   "version": "1.0.0",
-  "main": "eslintrc.js",
-  "author": "Breno Sobral",
   "license": "MIT",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "start": " echo 'No start script defined'",
-    "start:dev": "echo 'No start:dev script defined'",
-    "build": "echo 'No build script defined'",
-    "lint": "echo 'No lint script defined'",
-    "lint:fix": "echo 'No lint:fix script defined'",
-    "reset": "echo 'No reset script defined'",
-    "clean": "echo 'No clean script defined'",
-    "coverage": "echo 'No build script found'"
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean",
+    "dev": "tsup src/index.ts --format esm,cjs --dts --watch",
+    "lint": "eslint src --ext ts,tsx",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0 || ^14.0.0",
+    "@testing-library/user-event": "^14.0.0",
+    "vitest": "^0.34.6"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.2.0",
-    "@testing-library/user-event": "^14.6.1",
-    "jsdom": "^26.0.0",
-    "vitest": "^3.0.4"
+    "@monorepo/eslint": "*",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@types/testing-library__jest-dom": "^5.14.9",
+    "jsdom": "^21.1.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsup": "^6.7.0",
+    "typescript": "^4.9.5"
   },
-  "peerDependencies": {},
-  "publishConfig": {
-    "access": "public"
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
   }
 }
